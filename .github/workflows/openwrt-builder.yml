@@ -44,7 +44,22 @@ jobs:
       - name: 单独编译ipheth驱动
         run: |
           cd lede
-          make package/kernel/linux/compile V=s -j$(nproc)
+           make package/kernel/mii/compile -j$(nproc)
+           make package/kernel/nls-base/compile -j$(nproc)
+           make package/kernel/usb-core/compile -j$(nproc)
+           make package/kernel/usb-net/compile -j$(nproc)
+           make package/kernel/usb-net-ipheth/compile -j$(nproc)
+           make package/kernel/usb-net-rndis/compile -j$(nproc)
+           make package/kernel/usb-net-asix/compile -j$(nproc)
+           make package/kernel/usb-net-asix-ax88179_178a/compile -j$(nproc)
+           make package/kernel/usb-net-cdc-ether/compile -j$(nproc)
+           make package/kernel/usb-net-huawei-cdc/compile -j$(nproc)
+           make package/kernel/usb-net-rtl8150/compile -j$(nproc)
+           make package/kernel/usb-net-rtl8152/compile -j$(nproc)
+           make package/kernel/usb-ohci/compile -j$(nproc)
+           make package/kernel/usb-uhci/compile -j$(nproc)
+           make package/kernel/usb2/compile -j$(nproc)
+           make package/kernel/usb3/compile -j$(nproc)      
 
       - name: 上传最终驱动文件
         uses: actions/upload-artifact@v4
