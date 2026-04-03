@@ -29,8 +29,14 @@ jobs:
           echo "CONFIG_TARGET_x86=y" > .config
           echo "CONFIG_TARGET_x86_64=y" >> .config
           echo "CONFIG_TARGET_x86_64_DEVICE_generic=y" >> .config
-          # 选中需要的ipheth驱动
+          # 必需底层依赖
+          echo "CONFIG_PACKAGE_kmod-usb-core=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-usb-net=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nls-base=y" >> .config
+          # 苹果iPhone USB共享
           echo "CONFIG_PACKAGE_kmod-usb-net-ipheth=y" >> .config
+          # 安卓USB共享
+          echo "CONFIG_PACKAGE_kmod-usb-net-rndis=y" >> .config
           # 自动补全所有依赖配置，OpenWrt标准无bug步骤
           make defconfig
 
@@ -41,18 +47,18 @@ jobs:
           make toolchain/compile V=s -j$(nproc)
           make target/linux/compile V=s -j$(nproc)
 
-      - name: 单独编译ipheth驱动
+      - name: 单独编译驱动
         run: |
           cd lede
-           make package/kernel/nls-base/compile -j$(nproc)
-           make package/kernel/usb-core/compile -j$(nproc)
-           make package/kernel/usb-net/compile -j$(nproc)
-           make package/kernel/usb-net-ipheth/compile -j$(nproc)
-           make package/kernel/usb-net-rndis/compile -j$(nproc)
-           make package/kernel/usb-net-cdc-ether/compile -j$(nproc)
+          make package/kernel/linux/compile V=s -j$(nproc)
 
-      - name: 上传最终驱动文件
+      - name: 上传最终所有驱动文件
         uses: actions/upload-artifact@v4
         with:
-          name: kmod-usb-net-ipheth-6.12.74
-          path: lede/bin/targets/x86/64/packages/kmod-usb-net-ipheth*.ipk
+          name: all-usb-drivers
+          path: |
+            lede/bin/targets/x86/64/packages/kmod-usb-core*.ipk
+            lede/bin/targets/x86/64/packages/kmod-usb-net*.ipk
+            lede/bin/targets/x86/64/packages/kmod-nls-base*.ipk
+            lede/bin/targets/x86/64/packages/kmod-usb-net-ipheth*.ipk
+            lede/bin/targets/x86/64/packages/kmod-usb-net-rndis*.ipk
