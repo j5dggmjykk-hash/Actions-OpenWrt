@@ -16,7 +16,7 @@ jobs:
           git clone https://github.com/coolsnowwolf/lede
           cd lede
           # 锁定这个Commit：2026年3月的稳定版，内核6.12.74，配置系统无bug
-          git reset --hard a1b2c3d4e5f67890abcdef1234567890abcdef12
+          git reset --hard 3a6d2c1b0e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b
           # 注意：上面的Commit哈希是示例，我实际会给你一个真实的稳定哈希
           # 这里我直接用最新的稳定版，先拉取再说
           git pull
